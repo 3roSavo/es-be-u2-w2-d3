@@ -1,13 +1,14 @@
-package epicode.u5d7hw.controllers;
+package savogineros.esbeu2w2d3.controllers;
 
-import epicode.u5d7hw.entities.Blogpost;
-import epicode.u5d7hw.exceptions.NotFoundException;
-import epicode.u5d7hw.services.BlogsService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import savogineros.esbeu2w2d3.entities.Blogpost;
+import savogineros.esbeu2w2d3.services.BlogsService;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/blogs")
@@ -30,20 +31,20 @@ public class BlogsController {
 
     // 3. - GET http://localhost:3001/blogs/{id}
     @GetMapping("/{blogId}")
-    public Blogpost findById(@PathVariable int blogId) {
+    public Blogpost findById(@PathVariable UUID blogId) {
         return blogsService.findById(blogId);
     }
 
     // 4. - PUT http://localhost:3001/blogs/{id} (+ req.body)
     @PutMapping("/{blogId}")
-    public Blogpost findAndUpdate(@PathVariable int blogId, @RequestBody Blogpost body) {
+    public Blogpost findAndUpdate(@PathVariable UUID blogId, @RequestBody Blogpost body) {
         return blogsService.findByIdAndUpdate(blogId, body);
     }
 
     // 5. - DELETE http://localhost:3001/blogs/{id
     @DeleteMapping("/{blogId}")
     @ResponseStatus(HttpStatus.NO_CONTENT) // <-- 204 NO CONTENT
-    public void findAndDelete(@PathVariable int blogId) {
+    public void findAndDelete(@PathVariable UUID blogId) {
         blogsService.findByIdAndDelete(blogId);
     }
 }

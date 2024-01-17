@@ -1,67 +1,58 @@
-package epicode.u5d7hw.services;
+package savogineros.esbeu2w2d3.services;
 
-import epicode.u5d7hw.entities.Author;
-import epicode.u5d7hw.exceptions.NotFoundException;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import savogineros.esbeu2w2d3.entities.Author;
+import savogineros.esbeu2w2d3.exceptions.NotFoundException;
+import savogineros.esbeu2w2d3.repositories.AuthorsDAO;
 
 import java.util.*;
 
 @Service
 public class AuthorsService {
-
-    private final List<Author> authors = new ArrayList<>();
+    @Autowired
+    private AuthorsDAO authorsDAO;
+    //private final List<Author> authors = new ArrayList<>();
 
     public Author save(Author author) {
-        Random rndm = new Random();
-        author.setId(rndm.nextInt());
-        author.setAvatar("https://ui-avatars.com/api/?name="+ author.getName() + "+" + author.getSurname());
-        this.authors.add(author);
-        return author;
+        //this.authors.add(author);
+        return authorsDAO.save(author); // la save ritorna pure l'oggetto salvato
+        //return author;
     }
 
     public List<Author> getAuthors() {
-        return this.authors;
+        return authorsDAO.findAll(); // il metodo dao findAll torna invece una lista
     }
 
-    public Author findById(int id) {
-        Author found = null;
-
-        for (Author author : authors) {
-            if (author.getId() == id)
-                found = author;
+    public Author findById(UUID id) {
+        Optional<Author> author = authorsDAO.findById(id);
+        if (author.isPresent()) {
+            return author.get();
+        } else {
+            throw new RuntimeException("Utente con id " + id + " non trovato");
         }
-        if (found == null)
-            throw new NotFoundException(id);
-        return found;
+
+        // OPPURE
+        // return authorsDAO.findById(id).orElseThrow(() -> new NotFoundException(id));
+
     }
 
     // DELETE
-    public void findByIdAndDelete(int id) {
-        ListIterator<Author> iterator = this.authors.listIterator();
-
-        while (iterator.hasNext()) {
-            Author currentAuthor = iterator.next();
-            if (currentAuthor.getId() == id) {
-                iterator.remove();
-            }
-        }
+    public void findByIdAndDelete(UUID id) {
+        Author author = this.findById(id);
+        authorsDAO.delete(author);
     }
 
     // PUT
-    public Author findByIdAndUpdate(int id, Author author) {
-        Author found = null;
+    public Author findByIdAndUpdate(UUID id, Author author) {
 
-        for (Author currentAuthor : authors) {
-            if (currentAuthor.getId() == id) {
-                found = currentAuthor;
-                found.setName(author.getName());
-                found.setSurname(author.getSurname());
-                found.setId(id);
-            }
-        }
-        if (found == null)
-            throw new NotFoundException(id);
-        return found;
-
+        Author author1 = findById(id);
+        author1.setName(author.getName());
+        author1.setSurname(author.getSurname());
+        author1.setEmail(author.getEmail());
+        author1.setDateOfBirth(author.getDateOfBirth());
+        author1.setAvatar(author.getAvatar());
+        return authorsDAO.save(author1);
     }
 }

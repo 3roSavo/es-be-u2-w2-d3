@@ -1,19 +1,37 @@
-package epicode.u5d7hw.entities;
+package savogineros.esbeu2w2d3.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import lombok.*;
+
+import java.util.UUID;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@NoArgsConstructor
 @ToString
+@Entity
 public class Blogpost {
-    private int id;
+    @Id
+    @GeneratedValue
+    @Setter(AccessLevel.NONE)
+    private UUID id;
+
     private String category;
+
     private String title;
+
     private String cover;
+
     private String content;
+
     private double readingTime;
+
+    public Blogpost(String category, String title, String content, double readingTime) {
+        this.category = category;
+        this.title = title;
+        this.content = content;
+        this.readingTime = readingTime;
+    }
 }

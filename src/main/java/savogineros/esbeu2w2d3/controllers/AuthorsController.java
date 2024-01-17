@@ -1,8 +1,5 @@
-package epicode.u5d7hw.controllers;
+package savogineros.esbeu2w2d3.controllers;
 
-import epicode.u5d7hw.entities.Author;
-import epicode.u5d7hw.exceptions.NotFoundException;
-import epicode.u5d7hw.services.AuthorsService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import savogineros.esbeu2w2d3.entities.Author;
+import savogineros.esbeu2w2d3.services.AuthorsService;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/authors")
@@ -39,20 +39,20 @@ public class AuthorsController {
 
     // 3. - GET http://localhost:3001/authors/{id}
     @GetMapping("/{authorId}")
-    public Author findById(@PathVariable int authorId) throws Exception {
+    public Author findById(@PathVariable UUID authorId) throws Exception {
         return authorsService.findById(authorId);
     }
 
     // 4. - PUT http://localhost:3001/authors/{id} (+ req.body)
     @PutMapping("/{authorId}")
-    public Author findAndUpdate(@PathVariable int authorId, @RequestBody Author body) throws Exception {
+    public Author findAndUpdate(@PathVariable UUID authorId, @RequestBody Author body) throws Exception {
         return authorsService.findByIdAndUpdate(authorId, body);
     }
 
     // 5. - DELETE http://localhost:3001/authors/{id}
     @DeleteMapping("/{authorId}")
     @ResponseStatus(HttpStatus.NO_CONTENT) // <-- 204 NO CONTENT
-    public void findAndDelete(@PathVariable int authorId) {
+    public void findAndDelete(@PathVariable UUID authorId) {
         authorsService.findByIdAndDelete(authorId);
     }
 }
