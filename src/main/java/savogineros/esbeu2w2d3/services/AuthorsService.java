@@ -2,6 +2,10 @@ package savogineros.esbeu2w2d3.services;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import savogineros.esbeu2w2d3.entities.Author;
 import savogineros.esbeu2w2d3.exceptions.NotFoundException;
@@ -21,8 +25,10 @@ public class AuthorsService {
         //return author;
     }
 
-    public List<Author> getAuthors() {
-        return authorsDAO.findAll(); // il metodo dao findAll torna invece una lista
+    // GET all authors
+    public Page<Author> getAuthors(int page, int size, String sort) {
+        Pageable pageable = PageRequest.of(page,size, Sort.by(sort));
+        return authorsDAO.findAll(pageable); // il metodo dao findAll torna invece una lista
     }
 
     public Author findById(UUID id) {

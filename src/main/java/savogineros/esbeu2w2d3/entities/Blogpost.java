@@ -1,8 +1,7 @@
 package savogineros.esbeu2w2d3.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.UUID;
@@ -27,6 +26,11 @@ public class Blogpost {
     private String content;
 
     private double readingTime;
+
+    @ManyToOne
+    @JoinColumn(name = "authorId")
+    //@JsonIgnore
+    private Author author;
 
     public Blogpost(String category, String title, String content, double readingTime) {
         this.category = category;
